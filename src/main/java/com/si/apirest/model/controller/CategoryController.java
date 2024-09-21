@@ -35,22 +35,22 @@ public class CategoryController {
     public ResponseEntity<OkResponse> crearCategory(@RequestBody @Valid Category category) {
         categoryService.createCategory(category);
         return ResponseEntity.ok(OkResponse.builder()
-        .message("Creación de categoria correcta.")
+        .message("categoria creada correctamente")
         .build());
     }
 
     @PutMapping("/update")
-    public void updateDepartament(@RequestBody Category category) {
+    public void updateCategory(@RequestBody Category category) {
         categoryService.updateCategory(category);
     }
 
     @GetMapping("/{id}")
-    public Optional<Category> getDepartament(@PathVariable int id) {
+    public Optional<Category> getCategory(@PathVariable int id) {
         return categoryService.getCategory(id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteDepartament(@PathVariable int id) {
+    public void deleteCategory(@PathVariable int id) {
         categoryService.deleteCategory(id);
     }
 

@@ -1,5 +1,4 @@
 package com.si.apirest.model.entity;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
@@ -33,7 +32,4 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @JsonIgnore
     private List<Producto> producto;
-    
-    @ManyToOne
-    private Departament departament;
 }
