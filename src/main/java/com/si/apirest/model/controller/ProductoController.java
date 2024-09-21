@@ -22,7 +22,6 @@ import com.si.apirest.model.service.ProductoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-
 @RestController
 @RequestMapping("/producto")
 @RequiredArgsConstructor
@@ -31,37 +30,51 @@ public class ProductoController {
     private final ProductoService productoService;
 
     @PostMapping("/save")
-    public ResponseEntity<OkResponse> crearProducto (@RequestBody @Valid Producto producto){
+    public ResponseEntity<OkResponse> crearProducto(@RequestBody @Valid Producto producto) {
         productoService.crearProducto(producto);
         return ResponseEntity.ok(OkResponse.builder()
-        .message("Creación del producto exitosa.")
-        .build());
+                .message("Creación del producto exitosa.")
+                .build());
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProducto (@PathVariable int id){
+    public void deleteProducto(@PathVariable int id) {
         productoService.deleteProducto(id);
     }
 
     @PutMapping("/update")
-    public void updateProducto (@RequestBody Producto producto){
+    public void updateProducto(@RequestBody Producto producto) {
         productoService.updateProducto(producto);
     }
 
     @GetMapping("/{id}")
-    public Optional<Producto> findProducto (@PathVariable int id){
+    public Optional<Producto> findProducto(@PathVariable int id) {
         return productoService.findProducto(id);
     }
 
     @GetMapping("/all")
-    public List<ProductoDTO> getAllProducto(){
+    public List<ProductoDTO> getAllProducto() {
         return productoService.getAllProducto();
-    }   
+    }
 
     @GetMapping("/category/{id}")
-    public List<Inventario> getMethodName(@PathVariable int id) {
+    public List<Inventario> findByCategory(@PathVariable int id) {
         return productoService.findByCategory(id);
     }
-    
+
+    @GetMapping("/size/{id}")
+    public List<Inventario> findBySize(@PathVariable int id) {
+        return productoService.findBySize(id);
+    }
+
+    @GetMapping("/brand/{id}")
+    public List<Inventario> findByBrand(@PathVariable int id) {
+        return productoService.findByBrand(id);
+    }
+
+    @GetMapping("/color/{id}")
+    public List<Inventario> findByColor(@PathVariable int id) {
+        return productoService.findByColor(id);
+    }
 
 }

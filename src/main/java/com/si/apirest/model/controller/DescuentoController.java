@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/descuento")
+@RequestMapping("/discount")
 public class DescuentoController {
     
     @Autowired

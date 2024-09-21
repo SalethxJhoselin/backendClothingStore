@@ -30,15 +30,19 @@ public class Producto {
 
     @NotBlank(message = "Atributo nombre requerido")
     private String nombre;
+    private String imagen;
 
     @Column(precision = 10, scale = 2)
     private BigDecimal precio;
-    
-    @ManyToOne
-    private Imagen imagen;
 
     @ManyToOne
     private Category category;
+    @ManyToOne
+    private Color color;
+    @ManyToOne
+    private Size size;
+    @ManyToOne
+    private Brand brand;
     @ManyToOne
     private Descuento descuento;
     @OneToOne(mappedBy = "producto")

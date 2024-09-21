@@ -9,11 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.si.apirest.model.dto.ProductoDTO;
+import com.si.apirest.model.entity.Brand;
 import com.si.apirest.model.entity.Category;
+import com.si.apirest.model.entity.Color;
 import com.si.apirest.model.entity.Inventario;
 import com.si.apirest.model.entity.Producto;
+import com.si.apirest.model.entity.Size;
+import com.si.apirest.model.repository.BrandRepository;
 import com.si.apirest.model.repository.CategoryRepository;
+import com.si.apirest.model.repository.ColorRepository;
 import com.si.apirest.model.repository.ProductoRepository;
+import com.si.apirest.model.repository.SizeRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +32,12 @@ public class ProductoService {
 
     @Autowired
     private final CategoryRepository categoryRepository;
+    @Autowired
+    private final ColorRepository colorRepository;
+    @Autowired
+    private final SizeRepository sizeRepository;
+    @Autowired
+    private final BrandRepository brandRepository;
 
     @Autowired    
     private final ModelMapper modelMapper;
@@ -65,4 +77,31 @@ public class ProductoService {
         return inventarios;
     }
     
+    public List<Inventario> findByColor(int id) {
+        Color color = colorRepository.findById(id).orElse(null);
+        List<Inventario> inventarios = new ArrayList<>();
+        List<Producto> productos = productoRepository.findByColor(color);
+        for (Producto producto : productos) {
+            inventarios.add(producto.getInventario());
+        }
+        return inventarios;
+    }
+    public List<Inventario> findByBrand(int id) {
+        Brand brand = brandRepository.findById(id).orElse(null);
+        List<Inventario> inventarios = new ArrayList<>();
+        List<Producto> productos = productoRepository.findByBrand(brand);
+        for (Producto producto : productos) {
+            inventarios.add(producto.getInventario());
+        }
+        return inventarios;
+    }
+    public List<Inventario> findBySize(int id) {
+        Size size = sizeRepository.findById(id).orElse(null);
+        List<Inventario> inventarios = new ArrayList<>();
+        List<Producto> productos = productoRepository.findBySize(size);
+        for (Producto producto : productos) {
+            inventarios.add(producto.getInventario());
+        }
+        return inventarios;
+    }
 }
