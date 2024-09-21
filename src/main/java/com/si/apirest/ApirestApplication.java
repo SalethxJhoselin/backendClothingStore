@@ -75,9 +75,9 @@ public class ApirestApplication {
 		Optional<Person> optionalUser = personRepository.findByUsuario(Role.ADMIN.toString());
         Person user= Person.builder()
 		.usuario(Role.ADMIN.toString())
-		.contraseña(passwordEncoder.encode("65873154"))
-		.nombre("ADMIN")
-		.email("wolfcoimbraivo@gmail.com")
+		.contraseña(passwordEncoder.encode("test"))
+		.nombre("123")
+		.email("saleth@gmail.com")
 		.role(rol)
 		.enabled(true)
 		.build();

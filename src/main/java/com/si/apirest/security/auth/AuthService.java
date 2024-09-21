@@ -37,7 +37,7 @@ public class AuthService {
     public AuthResponse register(RegisterRequest request) {
         Optional<Person> userExist = personRepository.findByUsuario(request.getUsername());
         if(userExist.isPresent()){
-            throw new PersonExistException("This user already exist mr presidente.");
+            throw new PersonExistException("This user already");
         }
         Person user = Person.builder()
         .usuario(request.getUsername())
