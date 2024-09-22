@@ -31,7 +31,7 @@ public class CategoryController {
     @Autowired
     private final CategoryService categoryService;
 
-     @PostMapping("/save")
+     @PostMapping
     public ResponseEntity<OkResponse> crearCategory(@RequestBody @Valid Category category) {
         categoryService.createCategory(category);
         return ResponseEntity.ok(OkResponse.builder()
@@ -39,7 +39,7 @@ public class CategoryController {
         .build());
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public void updateCategory(@RequestBody Category category) {
         categoryService.updateCategory(category);
     }

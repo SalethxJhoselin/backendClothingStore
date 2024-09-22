@@ -19,5 +19,5 @@ public class Descuento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int porcentaje;
-    private String descripcion;
+    private String nombre;
 }

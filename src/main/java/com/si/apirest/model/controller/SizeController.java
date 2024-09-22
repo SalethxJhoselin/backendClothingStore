@@ -30,7 +30,7 @@ public class SizeController {
     @Autowired
     private final SizeService sizeService;
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<OkResponse> crearSize(@RequestBody @Valid Size size) {
         sizeService.createSize(size);
         return ResponseEntity.ok(OkResponse.builder()
@@ -38,7 +38,7 @@ public class SizeController {
                 .build());
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public void updateSize(@RequestBody Size size) {
         sizeService.updateSize(size);
     }

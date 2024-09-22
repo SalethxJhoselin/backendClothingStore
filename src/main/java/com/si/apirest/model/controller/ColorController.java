@@ -30,7 +30,7 @@ public class ColorController {
     @Autowired
     private final ColorService colorService;
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<OkResponse> crearColor(@RequestBody @Valid Color color) {
         colorService.createColor(color);
         return ResponseEntity.ok(OkResponse.builder()
@@ -38,7 +38,7 @@ public class ColorController {
                 .build());
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public void updateColor(@RequestBody Color color) {
         colorService.updateColor(color);
     }

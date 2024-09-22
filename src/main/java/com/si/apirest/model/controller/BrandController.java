@@ -31,7 +31,7 @@ public class BrandController {
     @Autowired
     private final BrandService brandService;
 
-     @PostMapping("/save")
+     @PostMapping
     public ResponseEntity<OkResponse> crearBrand(@RequestBody @Valid Brand brand) {
         brandService.createBrand(brand);
         return ResponseEntity.ok(OkResponse.builder()
@@ -39,7 +39,7 @@ public class BrandController {
         .build());
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public void updateBrand(@RequestBody Brand brand) {
         brandService.updateBrand(brand);
     }
