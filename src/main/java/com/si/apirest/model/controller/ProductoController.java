@@ -3,7 +3,6 @@ package com.si.apirest.model.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,6 @@ import com.si.apirest.model.dto.ProductoDTO;
 import com.si.apirest.model.entity.Inventario;
 import com.si.apirest.model.entity.Producto;
 import com.si.apirest.model.exceptions.OkResponse;
-import com.si.apirest.model.service.InventarioService;
 import com.si.apirest.model.service.ProductoService;
 
 import jakarta.validation.Valid;
@@ -31,9 +29,6 @@ import lombok.RequiredArgsConstructor;
 public class ProductoController {
 
     private final ProductoService productoService;
-
-    @Autowired
-    private final InventarioService inventarioService;
 
     @PostMapping
     public ResponseEntity<OkResponse> crearProducto(@RequestBody @Valid Producto producto) {
