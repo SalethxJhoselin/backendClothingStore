@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.si.apirest.model.dto.ProductoCatalogoDTO;
 import com.si.apirest.model.dto.ProductoDTO;
 import com.si.apirest.model.entity.Brand;
 import com.si.apirest.model.entity.Category;
@@ -39,31 +40,32 @@ public class ProductoService {
     @Autowired
     private final BrandRepository brandRepository;
 
-    @Autowired    
+    @Autowired
     private final ModelMapper modelMapper;
+    private final InventarioService inventarioService;
 
-    public void crearProducto (Producto producto){
+    public void crearProducto(Producto producto) {
         productoRepository.save(producto);
-    }    
+    }
 
-    public Optional<Producto> findProducto (int id){
+    public Optional<Producto> findProducto(int id) {
         return productoRepository.findById(id);
     }
 
-    public List<ProductoDTO> getAllProducto(){
+    public List<ProductoDTO> getAllProducto() {
         List<ProductoDTO> productoDTOs = new ArrayList<>();
         List<Producto> productos = productoRepository.findAll();
         for (Producto producto : productos) {
-            productoDTOs.add(modelMapper.map(producto,ProductoDTO.class));
+            productoDTOs.add(modelMapper.map(producto, ProductoDTO.class));
         }
         return productoDTOs;
     }
 
-    public void deleteProducto(int id){
+    public void deleteProducto(int id) {
         productoRepository.deleteById(id);
     }
 
-    public void updateProducto (Producto producto){
+    public void updateProducto(Producto producto) {
         productoRepository.save((producto));
     }
 
@@ -76,7 +78,7 @@ public class ProductoService {
         }
         return inventarios;
     }
-    
+
     public List<Inventario> findByColor(int id) {
         Color color = colorRepository.findById(id).orElse(null);
         List<Inventario> inventarios = new ArrayList<>();
@@ -86,6 +88,7 @@ public class ProductoService {
         }
         return inventarios;
     }
+
     public List<Inventario> findByBrand(int id) {
         Brand brand = brandRepository.findById(id).orElse(null);
         List<Inventario> inventarios = new ArrayList<>();
@@ -95,6 +98,7 @@ public class ProductoService {
         }
         return inventarios;
     }
+
     public List<Inventario> findBySize(int id) {
         Size size = sizeRepository.findById(id).orElse(null);
         List<Inventario> inventarios = new ArrayList<>();
@@ -103,5 +107,30 @@ public class ProductoService {
             inventarios.add(producto.getInventario());
         }
         return inventarios;
+    }
+
+    public List<ProductoCatalogoDTO> obtenerCatalogoConInventario() {
+        List<Producto> productos = productoRepository.findAll();
+        List<ProductoCatalogoDTO> catalogo = new ArrayList<>();
+
+        for (Producto producto : productos) {
+            // Verificar si el inventario no es nulo
+            Inventario inventario = inventarioService.consultarInventario(producto.getId());
+            int cantidadEnInventario = (inventario != null) ? inventario.getCantidad() : 0;
+            ProductoCatalogoDTO dto = new ProductoCatalogoDTO(
+                    producto.getId(),
+                    producto.getNombre(),
+                    producto.getImagen(),
+                    producto.getPrecio(),
+                    producto.getSize(),
+                    producto.getCategory(),
+                    producto.getColor(),
+                    producto.getBrand(),
+                    producto.getDescuento(),
+                    cantidadEnInventario);
+            catalogo.add(dto);
+        }
+
+        return catalogo;
     }
 }

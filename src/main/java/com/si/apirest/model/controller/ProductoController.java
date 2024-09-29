@@ -3,6 +3,7 @@ package com.si.apirest.model.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.si.apirest.model.dto.ProductoCatalogoDTO;
 import com.si.apirest.model.dto.ProductoDTO;
 import com.si.apirest.model.entity.Inventario;
 import com.si.apirest.model.entity.Producto;
 import com.si.apirest.model.exceptions.OkResponse;
+import com.si.apirest.model.service.InventarioService;
 import com.si.apirest.model.service.ProductoService;
 
 import jakarta.validation.Valid;
@@ -29,7 +32,10 @@ public class ProductoController {
 
     private final ProductoService productoService;
 
-    @PostMapping("/save")
+    @Autowired
+    private final InventarioService inventarioService;
+
+    @PostMapping
     public ResponseEntity<OkResponse> crearProducto(@RequestBody @Valid Producto producto) {
         productoService.crearProducto(producto);
         return ResponseEntity.ok(OkResponse.builder()
@@ -42,7 +48,7 @@ public class ProductoController {
         productoService.deleteProducto(id);
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public void updateProducto(@RequestBody Producto producto) {
         productoService.updateProducto(producto);
     }
@@ -52,7 +58,7 @@ public class ProductoController {
         return productoService.findProducto(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<ProductoDTO> getAllProducto() {
         return productoService.getAllProducto();
     }
@@ -75,6 +81,12 @@ public class ProductoController {
     @GetMapping("/color/{id}")
     public List<Inventario> findByColor(@PathVariable int id) {
         return productoService.findByColor(id);
+    }
+
+    @GetMapping("/catalogo")
+    public ResponseEntity<List<ProductoCatalogoDTO>> obtenerCatalogo() {
+        List<ProductoCatalogoDTO> catalogo = productoService.obtenerCatalogoConInventario();
+        return ResponseEntity.ok(catalogo);
     }
 
 }
