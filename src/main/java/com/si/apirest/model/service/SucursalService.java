@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class SucursalService {
 
     @Autowired
-    private final SucursalRepository sucursalRepository;
+    private SucursalRepository sucursalRepository;
 
     public void createSucursal(Sucursal sucursal) {
         sucursalRepository.save(sucursal);

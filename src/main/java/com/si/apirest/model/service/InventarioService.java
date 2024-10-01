@@ -19,11 +19,11 @@ import lombok.RequiredArgsConstructor;
 public class InventarioService {
 
     @Autowired
-    private final InventarioRepository inventarioRepository;
+    private InventarioRepository inventarioRepository;
     @Autowired
     private ProductoRepository productoRepository;
     @Autowired
-    private final NotaIngresoRepository notaIngresoRepository;
+    private NotaIngresoRepository notaIngresoRepository;
 
     public Inventario consultarInventario(int productoId) {
         Producto producto = productoRepository.findById(productoId)

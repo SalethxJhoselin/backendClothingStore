@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NotaIngresoController {
     @Autowired
-    private final InventarioService inventarioService;
+    private InventarioService inventarioService;
 
     @PostMapping
     public ResponseEntity<NotaIngreso> crearNotaIngreso(@RequestBody NotaIngreso notaIngreso) {

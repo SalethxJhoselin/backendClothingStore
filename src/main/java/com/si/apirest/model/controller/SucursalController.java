@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class SucursalController {
 
     @Autowired
-    private final SucursalService sucursalService;
+    private SucursalService sucursalService;
 
     @PostMapping
     public ResponseEntity<OkResponse> crearSucursal(@RequestBody @Valid Sucursal sucursal) {
@@ -38,13 +38,15 @@ public class SucursalController {
     }
 
     @PutMapping
-    public void updateSucursal(@RequestBody Sucursal sucursal) {
+    public void updateSucursal(@RequestBody @Valid Sucursal sucursal) {
         sucursalService.updateSucursal(sucursal);
     }
 
     @GetMapping("/{id}")
-    public Optional<Sucursal> getSucursal(@PathVariable int id) {
-        return sucursalService.getSucursal(id);
+    public ResponseEntity<Sucursal> getSucursal(@PathVariable int id) {
+        return sucursalService.getSucursal(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
