@@ -2,8 +2,6 @@ package com.si.apirest.model.entity;
 
 import java.math.BigDecimal;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,23 +18,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DetalleVenta {
-
+public class VentaItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @ManyToOne
-    @JoinColumn(name = "nota_venta_id")
-    @JsonBackReference
-    private NotaVenta notaVenta;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "producto_id")
     private Producto producto;
 
-    private int cantidad;
+    @ManyToOne
+    @JoinColumn(name = "venta_id")
+    private Venta venta;
+
     private BigDecimal precioUnitario;
-    private BigDecimal descuento;
-    private BigDecimal total;
+    private int cantidad;
+    private String descuento;
+
+    // Getters y Setters
 }

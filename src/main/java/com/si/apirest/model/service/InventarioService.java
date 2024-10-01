@@ -5,8 +5,11 @@ import org.springframework.stereotype.Service;
 
 import com.si.apirest.model.entity.Inventario;
 import com.si.apirest.model.entity.Producto;
+import com.si.apirest.model.entity.NotaIngreso;
+import com.si.apirest.model.entity.DetalleNotaIngreso;
 import com.si.apirest.model.repository.InventarioRepository;
 import com.si.apirest.model.repository.ProductoRepository;
+import com.si.apirest.model.repository.NotaIngresoRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,43 +22,34 @@ public class InventarioService {
     private final InventarioRepository inventarioRepository;
     @Autowired
     private ProductoRepository productoRepository;
-
-    @Transactional
-    public Inventario agregarProductos(int productoId, int cantidad) {
-        Producto producto = productoRepository.findById(productoId)
-                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
-
-        Inventario inventario = inventarioRepository.findByProducto(producto);
-
-        if (inventario == null) {
-            inventario = Inventario.builder()
-                    .producto(producto)
-                    .cantidad(cantidad)
-                    .build();
-        } else {
-            inventario.agregarProductos(cantidad);
-        }
-
-        return inventarioRepository.save(inventario);
-    }
-
-    @Transactional
-    public Inventario quitarProductos(int productoId, int cantidad) {
-        Producto producto = productoRepository.findById(productoId)
-                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
-
-        Inventario inventario = inventarioRepository.findByProducto(producto);
-        if (inventario == null) {
-            throw new IllegalArgumentException("Inventario no encontrado para el producto con ID: " + productoId);
-        }
-        inventario.quitarProductos(cantidad);
-        return inventarioRepository.save(inventario);
-    }
+    @Autowired
+    private final NotaIngresoRepository notaIngresoRepository;
 
     public Inventario consultarInventario(int productoId) {
         Producto producto = productoRepository.findById(productoId)
                 .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
 
         return inventarioRepository.findByProducto(producto);
+    }
+
+    @Transactional
+    public NotaIngreso procesarNotaIngreso(NotaIngreso notaIngreso) {
+        for (DetalleNotaIngreso detalle : notaIngreso.getDetalles()) {
+            Producto producto = detalle.getProducto();
+            Inventario inventario = inventarioRepository.findByProducto(producto);
+
+            // Si no existe el inventario, se crea uno nuevo
+            if (inventario == null) {
+                inventario = Inventario.builder()
+                        .producto(producto)
+                        .cantidad(detalle.getCantidad())
+                        .build();
+            } else {
+                inventario.agregarProductos(detalle.getCantidad());
+            }
+            inventarioRepository.save(inventario);
+        }
+
+        return notaIngresoRepository.save(notaIngreso); // Guardar la nota de ingreso
     }
 }
